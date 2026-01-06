@@ -8,19 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create("tasks", function (Blueprint $table) {
+        Schema::create("class_users", function (Blueprint $table) {
             $table->id();
             $table->foreignId("clases_id")->constrained()->cascadeOnDelete();
-            $table->string("title_name");
-            $table->string("description")->nullable();
-            $table->timestamp("time_for_task")->nullable();
-            $table->timestamp("max_points")->nullable();
+            $table->foreignId("users_id")->constrained()->cascadeOnDelete();
+            $table->boolean("role")->default(0);
             $table->timestamps();
+
+            $table->unique(["clase_id","user_id"]);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists("tasks");
+        Schema::dropIfExists("class_users");
     }
 };

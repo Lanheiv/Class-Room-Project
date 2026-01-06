@@ -6,22 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::create('profile_pictiors', function (Blueprint $table) {
+        Schema::create("profile_pictiors", function (Blueprint $table) {
             $table->id();
+            $table->foreignId("users_id")->constrained()->cascadeOnDelete();
+            $table->string("file_name");
+            $table->string("file_path");
+            $table->string("file_type")->nullable();
+            $table->unsignedBigInteger("file_size")->nullable();
+            $table->boolean("is_active")->default(true);
             $table->timestamps();
+
+            $table->unique(["users_id", "is_active"]);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('profile_pictiors');
+        Schema::dropIfExists("profile_pictiors");
     }
 };
