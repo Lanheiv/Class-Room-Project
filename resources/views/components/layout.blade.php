@@ -8,6 +8,10 @@
         <title>{{ $title ?? "Class BOOM" }}</title>
     </head>
     <body>
+        @auth
+            <x-nav />
+        @endauth
+
         {{ $slot }}
     </body>
 </html>

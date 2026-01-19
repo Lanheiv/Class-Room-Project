@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    public function guestIndex() {
-        return view("website.main.gest_index");
-    }
-    public function authIndex() {
-        return view("website.main.auth_index");
+    public function index()
+    {
+        if (auth()->check()) {
+            $userClasses = auth()->user()->classes()->get();
+
+            return view('website.main.auth_index', compact('userClasses'));
+        }
+        return redirect('/login');
     }
 }

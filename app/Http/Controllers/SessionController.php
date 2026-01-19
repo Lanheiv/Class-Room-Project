@@ -11,20 +11,20 @@ class SessionController extends Controller
     public function create() {
         return view("website.auth.login");
     }
-    public function store(request $request) {
-        $validate = $request->validate([
-            "username" => ["required", "email"],
-            "password" => ["required"]
+    public function store(Request $request) {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
         ]);
 
-
-        if (Auth::attempt($validate)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-
-            return redirect("/");
-        } else {
-            return redirect()->back()->withErrors(['error' => 'error']);
+            return redirect('/');
         }
+
+        return back()->withErrors([
+            'error' => 'The provided credentials do not match our records.',
+        ]);
     }
     public function destroy() {
         Auth::logout();

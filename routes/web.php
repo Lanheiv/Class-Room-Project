@@ -6,13 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SessionController;
 
-Route::name("main.")->controller(MainController::class)->group(function () {
-    if(auth()->user() == true) {
-        Route::get("/", "authIndex")->middleware("auth")->name("authIndex");
-    } else {
-        Route::get("/", "guestIndex")->middleware("guest")->name("guestIndex");
-    }
-});
+Route::get('/', [MainController::class, 'index'])->name('main.index');
 
 Route::name("session.")->controller(SessionController::class)->group(function () { // prefix('admin') pievien zem vien url maršruta /admin/...
     Route::middleware("guest")->group(function () {
@@ -20,7 +14,7 @@ Route::name("session.")->controller(SessionController::class)->group(function ()
         Route::post("/login", "store")->name("store"); 
     });
 
-    Route::post("/logut", "destroy")->name("destroy")->middleware("auth");
+    Route::post("/logout", "destroy")->name("destroy")->middleware("auth");
 });
 Route::name("user.")->middleware("guest")->controller(UserController::class)->group(function () {
     Route::get("/register", "create")->name("create");

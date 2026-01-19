@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('class_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('class_id')->constrained('clases')->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('clases_id')->constrained('clases')->cascadeOnDelete();
+            $table->foreignId('users_id')->constrained('users')->cascadeOnDelete();
             $table->boolean('role')->default(0);
             $table->timestamps();
 
-            $table->unique(['class_id', 'user_id']);
+            $table->unique(['clases_id','users_id']);
         });
     }
 
