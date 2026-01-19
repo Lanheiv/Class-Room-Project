@@ -15,15 +15,16 @@ return new class extends Migration
             $table->string('file_path');
             $table->string('file_type')->nullable();
             $table->unsignedBigInteger('file_size')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
 
-            $table->unique(['user_id', 'is_active']);
+            $table->unique(['user_id', 'is_active'], 'unique_active_picture')->where('is_active', true);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists("profile_pictiors");
+        Schema::dropIfExists('profile_pictures');
     }
 };
+

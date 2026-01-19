@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function index() {
+        return view("website.user.profile");
+    }
     public function create()
     {
         return view('website.auth.register');

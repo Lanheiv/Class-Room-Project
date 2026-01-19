@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ProfilePicture;
 
 class User extends Authenticatable
 {
@@ -31,15 +32,23 @@ class User extends Authenticatable
         ];
     }
 
-    // Relationship: user belongs to many classes
     public function classes()
     {
         return $this->belongsToMany(
-            Clases::class,   // model
-            'class_users',   // pivot table
-            'users_id',      // this model foreign key in pivot
-            'clases_id'      // related model foreign key in pivot
+            Clases::class,
+            'class_users',
+            'users_id',
+            'clases_id'
         )->withPivot('role')->withTimestamps();
     }
-}
+    
+    public function profilePictures()
+    {
+        return $this->hasMany(ProfilePicture::class);
+    }
 
+    public function profilePicture()
+    {
+        return $this->hasOne(ProfilePicture::class)->where('is_active', true);
+    }
+}

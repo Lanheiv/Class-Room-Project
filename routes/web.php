@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', [MainController::class, 'index'])->name('main.index');
 
@@ -17,13 +18,17 @@ Route::name("session.")->controller(SessionController::class)->group(function ()
 
     Route::post("/logout", "destroy")->name("destroy")->middleware("auth");
 });
-Route::name("user.")->middleware("guest")->controller(UserController::class)->group(function () {
+Route::name("user.")->controller(UserController::class)->group(function () {
     Route::middleware("guest")->group(function () {
         Route::get("/register", "create")->name("create");
         Route::post("/register", "store")->name("store");
     });
 
-    Route::get("/profile", "index")->name("index")->middleware("auth");
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'index'])->name('user.index');
+        Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('user.edit');
+        Route::post('/profile/edit', [ProfileController::class, 'update'])->name('user.update');
+    });
 });
 Route::name("class.")->middleware("auth")->controller(ClassController::class)->group(function () {
     Route::get("/class/{id}", "index")->name("index");
