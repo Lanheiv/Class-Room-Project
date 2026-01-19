@@ -2,9 +2,16 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
             <div class="flex space-x-3">
+                @if(auth()->user()->role == "user")
                 <a href="{{ url('/join-class') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition shadow-sm">Join Class</a>
-                <a href="{{ url('/classes') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition shadow-sm">Classes</a>
-                <a href="{{ url('/tasks') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition shadow-sm">Tasks</a>
+                @endif
+                <a href="{{ url('/') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition shadow-sm">Classes</a>
+                @if(auth()->user()->role == "user")
+                    <a href="{{ url('/tasks') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition shadow-sm">Tasks</a>
+                @endif
+                @if(auth()->user()->role == "teacher")
+                    <a href="{{ url('/create-class') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition shadow-sm">Make class</a>
+                @endif
                 <a href="{{ url('/profile') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition shadow-sm">Profile</a>
             </div>
             <div class="flex items-center space-x-3">

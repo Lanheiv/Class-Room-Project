@@ -13,7 +13,7 @@
     @else
         <div class="w-full max-w-sm space-y-4">
             @foreach($userClasses as $class)
-                <a href="{{ url('/classes/'.$class->id) }}"
+                <a href="{{ url('/class/'.$class->id) }}"
                    class="block w-full bg-white dark:bg-zinc-800 p-6 rounded-2xl shadow hover:shadow-lg transition">
                     <h2 class="text-xl font-semibold text-gray-800 dark:text-zinc-100">
                         {{ $class->class_name }}

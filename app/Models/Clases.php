@@ -16,14 +16,15 @@ class Clases extends Model
         'access_code',
     ];
 
-    // Relationship: class has many users
     public function users()
     {
-        return $this->belongsToMany(
-            User::class,
-            'class_users',
-            'clases_id',
-            'users_id'
-        )->withPivot('role')->withTimestamps();
+        return $this->belongsToMany(User::class, 'class_users', 'clases_id', 'users_id')
+                    ->withPivot('role')->withTimestamps();
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Tasks::class, 'class_id'); 
     }
 }
+
