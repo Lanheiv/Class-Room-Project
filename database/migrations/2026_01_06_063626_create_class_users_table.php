@@ -8,14 +8,14 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create("class_users", function (Blueprint $table) {
+        Schema::create('class_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("clases_id")->constrained()->cascadeOnDelete();
-            $table->foreignId("users_id")->constrained()->cascadeOnDelete();
-            $table->boolean("role")->default(0);
+            $table->foreignId('class_id')->constrained('clases')->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->boolean('role')->default(0);
             $table->timestamps();
 
-            $table->unique(["clase_id","user_id"]);
+            $table->unique(['class_id', 'user_id']);
         });
     }
 

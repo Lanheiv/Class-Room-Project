@@ -8,17 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create("profile_pictiors", function (Blueprint $table) {
+        Schema::create('profile_pictures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("users_id")->constrained()->cascadeOnDelete();
-            $table->string("file_name");
-            $table->string("file_path");
-            $table->string("file_type")->nullable();
-            $table->unsignedBigInteger("file_size")->nullable();
-            $table->boolean("is_active")->default(true);
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('file_name');
+            $table->string('file_path');
+            $table->string('file_type')->nullable();
+            $table->unsignedBigInteger('file_size')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->unique(["users_id", "is_active"]);
+            $table->unique(['user_id', 'is_active']);
         });
     }
 

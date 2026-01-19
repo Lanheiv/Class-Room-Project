@@ -8,13 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create("tasks_files", function (Blueprint $table) {
+        Schema::create('tasks_files', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("task_id")->constrained()->cascadeOnDelete();
-            $table->string("file_name");
-            $table->string("file_path");
-            $table->string("file_type")->nullable();
-            $table->unsignedBigInteger("file_size")->nullable();
+            $table->foreignId('task_id')->constrained('tasks')->cascadeOnDelete();
+            $table->string('file_name');
+            $table->string('file_path');
+            $table->string('file_type')->nullable();
+            $table->unsignedBigInteger('file_size')->nullable();
             $table->timestamps();
         });
     }
