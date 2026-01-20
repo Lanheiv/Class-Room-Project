@@ -14,7 +14,11 @@ class Tasks extends Model
         'title_name',
         'description',
         'time_for_task',
-        'max_points'
+        'max_points',
+    ];
+
+    protected $casts = [
+        'time_for_task' => 'datetime',
     ];
 
     public function class()
@@ -26,5 +30,9 @@ class Tasks extends Model
     {
         return $this->hasMany(TasksFiles::class, 'task_id');
     }
-}
 
+    public function submissions()
+    {
+        return $this->hasMany(TaskSubmission::class, 'task_id');
+    }
+}

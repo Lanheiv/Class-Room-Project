@@ -51,4 +51,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(ProfilePicture::class)->where('is_active', true);
     }
+    public function submittedTasks()
+    {
+        return $this->hasMany(TaskSubmission::class);
+    }
 }

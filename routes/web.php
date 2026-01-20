@@ -8,6 +8,9 @@ use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\SubmissionController;
+
 
 Route::get('/', [MainController::class, 'index'])->name('main.index');
 
@@ -46,4 +49,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin/user/{user}', [AdminController::class, 'edit'])->name('admin.user.edit');
     Route::put('/admin/user/{user}', [AdminController::class, 'update'])->name('admin.user.update');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/classes/{class}/tasks', [TaskController::class, 'store'])->name('task.store');
+    Route::post('/tasks/{task}/submit', [SubmissionController::class, 'store'])->name('submission.store');
+    Route::post('/submissions/{submission}/grade', [SubmissionController::class, 'grade'])->name('submission.grade');
 });

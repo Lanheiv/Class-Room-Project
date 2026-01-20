@@ -62,5 +62,75 @@ class ClassController extends Controller
 
         return redirect('/')->with('success', 'Joined class!');
     }
+
+    
+public function addTask($classId)
+{
+    $class = Clases::findOrFail($classId);
+    return view('website.classes.add-task', compact('class'));
+}
+
+public function storeTask(Request $request, $classId)
+{
+    $request->validate([
+        'title_name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'time_for_task' => 'nullable|date',
+        'max_points' => 'nullable|integer',
+        'file' => 'nullable|file|max:5120'
+    ]);
+
+    $task = Tasks::create([
+        'class_id' => $classId,
+        'title_name' => $request->title_name,
+        'description' => $request->description,
+        'time_for_task' => $request->time_for_task,
+        'max_points' => $request->max_points
+    ]);
+
+    if($request->hasFile('file')) {
+        $path = $request->file('file')->store('task_files', 'public');
+        $task->files()->create([
+            'file_name' => $request->file('file')->getClientOriginalName(),
+            'file_path' => $path,
+            'file_type' => $request->file('file')->getClientMimeType(),
+            'file_size' => $request->file('file')->getSize()
+        ]);
+    }
+
+    return redirect()->route('class.index', $classId)->with('success', 'Task created!');
+}
+
+public function submitTask(Request $request, $taskId)
+{
+    $request->validate([
+        'file' => 'required|file|max:5120',
+        'comment' => 'nullable|string'
+    ]);
+
+    $path = $request->file('file')->store('task_submissions', 'public');
+
+    TaskSubmission::create([
+        'task_id' => $taskId,
+        'student_id' => auth()->id(),
+        'file_path' => $path,
+        'comment' => $request->comment
+    ]);
+
+    return redirect()->back()->with('success', 'Submission uploaded!');
+}
+
+public function gradeSubmission(Request $request, $submissionId)
+{
+    $request->validate([
+        'grade' => 'required|integer|min:0'
+    ]);
+
+    $submission = TaskSubmission::findOrFail($submissionId);
+    $submission->update(['grade' => $request->grade]);
+
+    return redirect()->back()->with('success', 'Submission graded!');
+}
+
 }
 
