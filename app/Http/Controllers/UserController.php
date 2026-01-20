@@ -8,6 +8,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
 
+use App\Helpers\LogActivity;
+
 class UserController extends Controller
 {
     public function index() {
@@ -29,6 +31,10 @@ class UserController extends Controller
         $validated['role'] = 'user';
 
         $user = User::create($validated);
+        LogActivity::add(
+            'New user join ' . $validated['username'],
+            'users'
+        );
 
         Auth::login($user);
 

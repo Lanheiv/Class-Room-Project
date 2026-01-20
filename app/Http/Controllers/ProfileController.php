@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Helpers\LogActivity;
 
 use App\Models\ProfilePicture;
 use Illuminate\Support\Facades\Storage;
@@ -29,13 +30,18 @@ class ProfileController extends Controller
             'username' => 'required|max:25|unique:users,username,' . $user->id,
             'full_name' => 'required|max:25',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'profile_picture' => 'nullable|image|max:2048', // max 2MB
+            'profile_picture' => 'nullable|image|max:2048',
         ]);
 
         $user->update($data);
 
         if ($request->hasFile('profile_picture')) {
-            $user->profilePictures()->where('is_active', true)->update(['is_active' => false]);
+            $activePicture = $user->profilePicture;
+
+            if ($activePicture) {
+                \Storage::disk('public')->delete($activePicture->file_path);
+                $activePicture->delete();
+            }
 
             $file = $request->file('profile_picture');
             $path = $file->store('profile_pictures', 'public');
@@ -48,8 +54,13 @@ class ProfileController extends Controller
                 'file_size' => $file->getSize(),
                 'is_active' => true,
             ]);
+
+            LogActivity::add(
+                'Changed profile picture to ' . $file->getClientOriginalName(),
+                'profile_pictures'
+            );
         }
 
-        return redirect("/profile")->with('success', 'Profile updated!');
+        return redirect('/profile')->with('success', 'Profile updated!');
     }
 }

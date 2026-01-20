@@ -7,6 +7,8 @@ use App\Models\Tasks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+use App\Helpers\LogActivity;
+
 class ClassController extends Controller
 {
     public function index($id)
@@ -31,6 +33,10 @@ class ClassController extends Controller
         $data['access_code'] = strtoupper(Str::random(6));
 
         $class = Clases::create($data);
+        LogActivity::add(
+            'Create new class ' . $data['class_name'],
+            'clases'
+        );
 
         $class->users()->attach(auth()->id(), ['role' => true]);
 
