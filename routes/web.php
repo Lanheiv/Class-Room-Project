@@ -7,6 +7,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminController;
 
 Route::get('/', [MainController::class, 'index'])->name('main.index');
 
@@ -38,4 +39,11 @@ Route::name("class.")->middleware("auth")->controller(ClassController::class)->g
 
     Route::get("/join-class", "join")->name("join");
     Route::post("/join-class", "store_join")->name("store_join");
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+
+    Route::get('/admin/user/{user}', [AdminController::class, 'edit'])->name('admin.user.edit');
+    Route::put('/admin/user/{user}', [AdminController::class, 'update'])->name('admin.user.update');
 });

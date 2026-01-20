@@ -12,6 +12,9 @@
                 @if(auth()->user()->role == "teacher")
                     <a href="{{ url('/create-class') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition shadow-sm">Make class</a>
                 @endif
+                @if(auth()->user()->role == "admin")
+                    <a href="/admin" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition shadow-sm">Admin panel</a>
+                @endif
                 <a href="{{ url('/profile') }}" class="px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 transition shadow-sm">Profile</a>
             </div>
             <div class="flex items-center space-x-3">
