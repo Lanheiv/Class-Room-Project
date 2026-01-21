@@ -37,18 +37,21 @@ Route::name("user.")->controller(UserController::class)->group(function () {
 Route::name("class.")->middleware("auth")->controller(ClassController::class)->group(function () {
     Route::get("/class/{id}", "index")->name("index");
     
-    Route::get("/create-class", "create")->name("create");
-    Route::post("/create-class", "store")->name("store");
+    Route::get("/create-class", "create")->name("create")->middleware("rolechacker:teacher");
+    Route::post("/create-class", "store")->name("store")->middleware("rolechacker:teacher");
 
     Route::get("/join-class", "join")->name("join");
     Route::post("/join-class", "store_join")->name("store_join");
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware('auth', "rolechacker:admin")->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
     Route::get('/admin/user/{user}', [AdminController::class, 'edit'])->name('admin.user.edit');
     Route::put('/admin/user/{user}', [AdminController::class, 'update'])->name('admin.user.update');
+
+    Route::get('/admin/users', [AdminController::class,'create'])->name('admin.users.create');
+    Route::post('/admin/users', [AdminController::class,'store'])->name('admin.users.store');
 });
 
 Route::middleware(['auth'])->group(function () {

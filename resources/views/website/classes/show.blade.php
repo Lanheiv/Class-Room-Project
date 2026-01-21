@@ -6,6 +6,7 @@
     <div>
         <h1 class="text-3xl font-bold text-gray-800 dark:text-zinc-100 mb-2">{{ $class->class_name }} ({{ $class->subject }})</h1>
         <p class="text-gray-600 dark:text-zinc-300 mb-4">{{ $class->description }}</p>
+        <p class="text-gray-600 dark:text-zinc-300 mb-4">Code: {{ $class->access_code }}</p>
     </div>
 
     @if(auth()->user()->role == 'teacher')
@@ -15,7 +16,12 @@
                 @csrf
                 <input type="text" name="title_name" placeholder="Task title" class="w-full p-2 rounded-lg dark:bg-zinc-900 dark:text-zinc-100" required>
                 <textarea name="description" placeholder="Description" class="w-full p-2 rounded-lg dark:bg-zinc-900 dark:text-zinc-100"></textarea>
-                <input type="datetime-local" name="time_for_task" class="w-full p-2 rounded-lg dark:bg-zinc-900 dark:text-zinc-100">
+                <input
+                    type="datetime-local"
+                    name="time_for_task"
+                    min="{{ now()->format('Y-m-d\TH:i') }}"
+                    class="w-full p-2 rounded-lg dark:bg-zinc-900 dark:text-zinc-100">
+
                 <input type="number" name="max_points" placeholder="Max points" class="w-full p-2 rounded-lg dark:bg-zinc-900 dark:text-zinc-100">
                 <input type="file" name="file" class="w-full">
                 <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition">Add Task</button>
@@ -76,11 +82,11 @@
         @endforeach
     </div>
 
-    <h2 class="text-xl font-semibold text-gray-800 dark:text-zinc-100 mt-6">Students & Teachers</h2>
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-zinc-100 mt-6">In class</h2>
     <div class="flex flex-wrap gap-2">
         @foreach($class->users as $user)
             <span class="px-3 py-1 rounded-full text-sm font-medium {{ $user->pivot->role == 'teacher' ? 'bg-green-500 text-white' : ($user->pivot->role == 'admin' ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-800') }}">
-                {{ $user->full_name }} ({{ ucfirst($user->pivot->role) }})
+                {{ $user->full_name }}
             </span>
         @endforeach
     </div>

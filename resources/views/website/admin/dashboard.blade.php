@@ -10,9 +10,17 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         <div class="bg-white dark:bg-zinc-800 rounded-2xl shadow p-4 sm:p-6 overflow-x-auto">
-            <h2 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-zinc-100 mb-4">
-                Users
-            </h2>
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg sm:text-xl font-semibold text-gray-800 dark:text-zinc-100">
+                    Users
+                </h2>
+
+                <a href="/admin/users"
+                class="px-4 py-2 bg-red-600 text-white rounded-xl text-sm font-medium hover:bg-red-700 transition">
+                    Create User
+                </a>
+            </div>
+
 
             <table class="w-full text-sm min-w-[500px] sm:min-w-[600px]">
                 <thead>

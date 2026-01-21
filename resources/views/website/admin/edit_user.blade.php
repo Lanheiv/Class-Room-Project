@@ -16,17 +16,19 @@
             <p><strong>Email:</strong> {{ $user->email }}</p>
         </div>
 
+        @if($user->role !== 'admin')
         <select name="role"
             class="w-full px-4 py-3 border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-900
                    text-gray-900 dark:text-zinc-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500">
             <option value="user" @selected($user->role === 'user')>User</option>
             <option value="teacher" @selected($user->role === 'teacher')>Teacher</option>
         </select>
-
+        
         <button type="submit"
             class="w-full bg-red-600 text-white py-3 rounded-xl font-medium hover:bg-red-700 transition">
             Save
         </button>
+        @endif
     </form>
 </div>
 </x-layout>

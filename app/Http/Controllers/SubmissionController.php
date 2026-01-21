@@ -38,15 +38,25 @@ class SubmissionController extends Controller
 
     public function grade(Request $request, $submissionId)
     {
-        $submission = TaskSubmission::findOrFail($submissionId);
+        $submission = TaskSubmission::with('task')->findOrFail($submissionId);
 
-        $data = $request->validate([
-            'grade' => 'required|integer|min:0',
+        $request->validate([
+            'grade' => [
+                'required',
+                'integer',
+                'min:0',
+                'max:' . $submission->task->max_points,
+            ],
         ]);
 
-        $submission->update(['grade' => $data['grade']]);
+        $submission->update([
+            'grade' => $request->grade,
+        ]);
 
-        LogActivity::add("Graded submission #{$submission->id} with {$data['grade']} points", 'submissions');
+        LogActivity::add(
+            "Graded submission #{$submission->id} with {$request->grade} points",
+            'submissions'
+        );
 
         return redirect()->back()->with('success', 'Submission graded!');
     }
